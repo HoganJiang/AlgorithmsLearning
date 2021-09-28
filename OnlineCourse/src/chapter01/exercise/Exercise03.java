@@ -1,33 +1,36 @@
 package chapter01.exercise;
 
-//题目：一个数组中，有两种数出现了奇数次，其他数都出现了偶数次，打印出这两种数
+//题目：一个数组中，有一种数出现了奇数次，其他数都出现了偶数次，打印这种数
 public class Exercise03 {
     public static void main(String[] args) {
-        int[] arr = {2,3,3,3,3,2,2,4,4,4};
-        PrintOddTimes2.printPrime(arr);
+        int[] arr = {2,3,3,3,3,2,2};
+        FindPrime.findPrime02(arr);
     }
 }
 
-class PrintOddTimes2 {
+class FindPrime {
 
-    public static void printPrime(int[] arr){
-        //1. 定义一个变量eor， 使eor异或原数组，令数组中两个不同的奇数分别为a,b，则eor = a ^ b
-        //此时，由于a不等于b，那么可推论出eor不等于0，也可推论出a与b中，必有一个数的二进制位有1
-        //因此，需要找到这个位置
+    //arr: 有一种数出现了奇数次，其他数都出现了偶数次
+    public static void findPrime02(int[] arr){
         int eor = 0;
-        for (int i = 0; i < arr.length;i++){
+        for(int i = 0; i < arr.length; i++)
             eor ^= arr[i];
+        System.out.println(eor);
+    }
+
+    //arr: 有一种数出现了奇数次，其他数都出现了偶数次
+    public static int findPrime01(int[] arr){
+
+        if (arr == null || arr.length == 0) return -1;
+
+        for(int i = 0; i < arr.length;i++){
+            int result = arr[i];
+            for(int j = 0; j < arr.length; j++){
+                if (arr[i] == arr[j]) result = result ^ arr[j];
+            }
+            if ((result ^ arr[i]) == arr[i]) return arr[i];
         }
-        //2. 求最右侧为1的数
-        int rightOne = eor & ((~eor) + 1);
-        //3. 求二进制为存在1的质数
-        int a = 0;
-        for(int i = 0; i < arr.length; i++){
-            //如果(arr[i] & rightOne) != 0 为true，那么此时这个数必有1
-            if ((arr[i] & rightOne) != 0)
-                a ^= arr[i];
-        }
-        //4. 求b，且打印a 和b
-        System.out.println("a=" + a + ",b=" + (eor ^ a));
+
+        return -1;
     }
 }
