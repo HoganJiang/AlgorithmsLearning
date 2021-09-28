@@ -10,15 +10,16 @@ public class Exercise01 {
         int times = 50;
         boolean succeed = true;
         for(int i = 0; i < times; i++){
-            int[] arr1 = Verifier.generateRandomArray(100, 1000);
-            int[] arr2 = Verifier.copy(arr1);
-//            BubbleSort.bubbleSort(arr1);
+            int[] arr1 = Verifier01.generateRandomArray(100, 1000);
+            int[] arr2 = Verifier01.copy(arr1);
+            SelectionSort.selectionSort(arr1);
+            BubbleSort.bubbleSort(arr1);
             InsertSort.insertSort(arr1);
-            Verifier.comparator(arr2);
-            if(!Verifier.isEqual(arr1,arr2)){
+            Verifier01.comparator(arr2);
+            if(!Verifier01.isEqual(arr1,arr2)){
                 succeed = false;
-                Verifier.printArr(arr1);
-                Verifier.printArr(arr2);
+                Verifier01.printArr(arr1);
+                Verifier01.printArr(arr2);
                 break;
             }
         }
@@ -30,15 +31,16 @@ class SelectionSort {
 
     public static void selectionSort(int[] arr){
 
-        if (arr == null || arr.length < 2) return;
+        if(arr == null || arr.length < 0) return;
 
         for(int i = 0; i < arr.length - 1; i++){
             int min = i;
-            for(int j = i + 1; j < arr.length;j++){
-                min = arr[min] > arr[j] ? j : min;
+            for(int j = i + 1; j < arr.length; j++){
+                min = arr[min] > arr[j]? j : min;
             }
             swap(arr,i,min);
         }
+
     }
 
     public static void swap(int[] arr, int i, int j){
@@ -56,11 +58,10 @@ class BubbleSort {
 
         for(int i = arr.length; i > 0; i--){
             for(int j = 0; j < i - 1; j++){
-                if (arr[j] > arr[j+1]){
-                    swap(arr, j,j+1);
-                }
+                if(arr[j] > arr[j + 1]) swap(arr,j,j + 1);
             }
         }
+
     }
 
     public static void swap(int[] arr, int i, int j){
@@ -79,9 +80,10 @@ class InsertSort {
 
         for(int i = 1; i < arr.length; i++){
             for(int j = i - 1; j >= 0 && arr[j] > arr[j + 1]; j--){
-                swap(arr, j, j + 1);
+                swap(arr,j,j+1);
             }
         }
+
     }
 
     public static void swap(int[] arr, int i, int j){
@@ -92,7 +94,7 @@ class InsertSort {
 
 }
 
-class Verifier {
+class Verifier01 {
 
     public static int[] generateRandomArray(int maxSize, int maxValue){
 
