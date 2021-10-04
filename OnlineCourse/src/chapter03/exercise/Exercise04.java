@@ -1,6 +1,7 @@
 package chapter03.exercise;
 
 import java.util.Arrays;
+import java.util.Stack;
 
 public class Exercise04 {
     public static void main(String[] args) {
@@ -13,10 +14,12 @@ public class Exercise04 {
             int[] arr1 = Verifier04.copyArray(randomArray);
             int[] arr2 = Verifier04.copyArray(randomArray);
             int[] arr3 = Verifier04.copyArray(randomArray);
+            int[] arr4 = Verifier04.copyArray(randomArray);
             RandomQuickSort.quickSort01(arr1);
             RandomQuickSort.quickSort02(arr2);
             RandomQuickSort.quickSort03(arr3);
-            if(!Verifier04.isEqual(arr1,arr2) || !Verifier04.isEqual(arr2,arr3)){
+            RandomQuickSort.quickSort04(arr4);
+            if(!Verifier04.isEqual(arr1,arr2) || !Verifier04.isEqual(arr2,arr3) || !Verifier04.isEqual(arr3,arr4)){
                 succeed = false;
                 break;
             }
@@ -110,6 +113,40 @@ class RandomQuickSort {
         int[] ans = netherlandsFlag(arr,lo,hi);
         process3(arr, lo, ans[0] - 1);
         process3(arr, ans[1] + 1, hi);
+    }
+
+    public static class Op {
+        public int l;
+        public int r;
+
+        public Op(int left, int right){
+            this.l = left;
+            this.r = right;
+        }
+    }
+    public static void quickSort04(int[] arr){
+        if(arr == null || arr.length < 2) return;
+
+        int N = arr.length;
+        swap(arr,(int)(Math.random() * N),N - 1);
+        int[] equal = netherlandsFlag(arr, 0, N - 1);
+        int equalLeft = equal[0];
+        int equalRight = equal[1];
+        Stack<Op> stack = new Stack<>();
+        stack.push(new Op(0, (equalLeft - 1)));
+        stack.push(new Op(equalRight + 1,(N - 1)));
+        while(!stack.isEmpty()){
+            Op op = stack.pop();
+            if(op.l < op.r){
+                swap(arr,op.l + (int)(Math.random() * (op.r - op.l + 1)), op.r);
+                equal = netherlandsFlag(arr, op.l, op.r);
+                equalLeft = equal[0];
+                equalRight = equal[1];
+                stack.push(new Op(op.l, equalLeft - 1));
+                stack.push(new Op(equalRight + 1, op.r));
+            }
+        }
+
     }
 
 }
