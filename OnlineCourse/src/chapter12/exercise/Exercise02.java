@@ -102,9 +102,45 @@ public class Exercise02 {
         return ans;
     }
 
+
+    /**
+     * 方式三：从记忆化搜索到标准动态规划
+     * (1) 分析BaseCase，初始化动态规划的表的位置
+     * (2) 分析最终要返回的结果的位置
+     * (3) 分析普遍位置的值应该怎么填
+     * @param arr
+     * @return
+     */
+    public static int winScore3(int[] arr){
+        if(arr == null || arr.length == 0){
+            return 0;
+        }
+        int N = arr.length;
+        int[][] fMap = new int[N][N];
+        int[][] sMap = new int[N][N];
+        for (int i = 0; i < N; i++) {
+            fMap[i][i] = arr[i];
+        }
+
+        for(int startCol = 1; startCol < N; startCol++){
+            int L = 0;
+            int R = startCol;
+            while(R < N){
+                fMap[L][R] = Math.max((arr[L] + sMap[L+1][R]),(arr[R] + sMap[L][R - 1]));
+                sMap[L][R] = Math.min((fMap[L + 1][R]),(fMap[L][R - 1]));
+                L++;
+                R++;
+            }
+        }
+
+        return Math.max(fMap[0][N - 1],sMap[0][N - 1]);
+    }
+
+
     public static void main(String[] args) {
         int[] arr = {7,100,30,21};
         System.out.println(winScore1(arr));
         System.out.println(winScore2(arr));
+        System.out.println(winScore3(arr));
     }
 }
